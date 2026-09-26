@@ -158,6 +158,16 @@ JSON SCHEMA:
     "marketSentiment": "e.g. Moderately Bullish / Selective Quality Focus",
     "marketSummary": "Concise 2-sentence executive summary of the current primary market and retail bidding appetite."
   },
+  "marketSentiment": {
+    "indexName": "NIFTY 50",
+    "currentValue": 26178.95,
+    "changePoints": 135.20,
+    "changePercent": 0.52,
+    "sentiment": "BULLISH" | "NEUTRAL" | "CAUTIOUS" | "BEARISH",
+    "vixValue": 12.45,
+    "summary": "Secondary market trends summary",
+    "retailAdvice": "Advice for retail IPO applicants given current market sentiment"
+  },
   "marketSummary": "Concise summary for ordinary retail investors."
 }
 
@@ -252,6 +262,7 @@ Return ONLY valid JSON. Include at least 12-16 representative Mainboard IPOs acr
       success: true,
       ipos: cleanedIpos,
       executiveTakeaway: parsed.executiveTakeaway || null,
+      marketSentiment: parsed.marketSentiment || null,
       marketSummary: parsed.marketSummary || 'AI Primary Market Analysis synchronized with NSE/BSE filings.',
       timestamp: new Date().toLocaleTimeString('en-IN', {
         timeZone: 'Asia/Kolkata',

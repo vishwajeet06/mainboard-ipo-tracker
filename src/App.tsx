@@ -25,6 +25,7 @@ import { IPODetailModal } from './components/IPODetailModal';
 import { LotCalculatorModal } from './components/LotCalculatorModal';
 import { SheetLinkModal } from './components/SheetLinkModal';
 import { ExportScriptModal } from './components/ExportScriptModal';
+import { MarketSentimentData, DEFAULT_MARKET_SENTIMENT } from './types/sentiment';
 
 import { 
   CheckCircle2, 
@@ -45,6 +46,7 @@ export default function App() {
   // Pure Data State
   const [ipos, setIpos] = useState<MainboardIPO[]>(MAINBOARD_IPOS);
   const [kpis, setKpis] = useState(DASHBOARD_KPIS);
+  const [marketSentiment, setMarketSentiment] = useState<MarketSentimentData>(DEFAULT_MARKET_SENTIMENT);
 
   // Dynamic Current Date for Indian Market
   const [currentDateFormatted, setCurrentDateFormatted] = useState<string>(() => {
@@ -186,6 +188,13 @@ export default function App() {
                 ...prev.executiveTakeaway,
                 ...data.executiveTakeaway,
               },
+            }));
+          }
+
+          if (data.marketSentiment) {
+            setMarketSentiment((prev) => ({
+              ...prev,
+              ...data.marketSentiment,
             }));
           }
 
@@ -418,6 +427,7 @@ export default function App() {
         onManualRefresh={handleManualRefresh}
         isRefreshing={isRefreshing}
         istTime={istTime}
+        sentimentData={marketSentiment}
       />
 
       {/* Main Container */}

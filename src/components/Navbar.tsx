@@ -9,6 +9,8 @@ import {
   Link2, 
   Sparkles 
 } from 'lucide-react';
+import { MarketSentimentIndicator } from './MarketSentimentIndicator';
+import { MarketSentimentData } from '../types/sentiment';
 
 interface NavbarProps {
   onOpenSyncModal: () => void;
@@ -22,6 +24,7 @@ interface NavbarProps {
   onManualRefresh: () => void;
   isRefreshing: boolean;
   istTime: string;
+  sentimentData?: MarketSentimentData;
 }
 
 export const Navbar: React.FC<NavbarProps> = ({
@@ -36,6 +39,7 @@ export const Navbar: React.FC<NavbarProps> = ({
   onManualRefresh,
   isRefreshing,
   istTime,
+  sentimentData,
 }) => {
   const formatCountdown = (secs: number) => {
     if (secs >= 3600) {
@@ -81,50 +85,56 @@ export const Navbar: React.FC<NavbarProps> = ({
             </div>
           </div>
 
-          {/* Center: Live Auto-Refresh Indicator & IST Clock */}
-          <div className="hidden xl:flex items-center gap-3 bg-slate-950/80 px-3.5 py-1.5 rounded-xl border border-slate-800 text-xs">
-            <div className="flex items-center gap-2 border-r border-slate-800 pr-3">
-              <Clock className="w-3.5 h-3.5 text-emerald-400" />
-              <span className="text-slate-200 font-mono font-semibold">{istTime} IST</span>
-            </div>
+          {/* Center: Live Nifty Sentiment Indicator & IST Auto-Refresh Indicator */}
+          <div className="hidden lg:flex items-center gap-3">
+            {sentimentData && (
+              <MarketSentimentIndicator data={sentimentData} />
+            )}
 
-            {/* Auto Refresh pill with Interval Selector */}
-            <div className="flex items-center gap-2">
-              <button
-                onClick={onToggleAutoRefresh}
-                className={`flex items-center gap-1.5 px-2.5 py-1 rounded-lg font-medium text-[11px] transition ${
-                  isAutoRefreshEnabled 
-                    ? 'bg-emerald-500/20 text-emerald-300 border border-emerald-500/30' 
-                    : 'bg-slate-800 text-slate-400 border border-slate-700'
-                }`}
-                title="Toggle automated dashboard refresh"
-              >
-                <span className={`w-2 h-2 rounded-full ${isAutoRefreshEnabled ? 'bg-emerald-400 animate-pulse' : 'bg-slate-500'}`} />
-                <span>Auto-Refresh: {isAutoRefreshEnabled ? `ON (${formatCountdown(refreshCountdown)})` : 'OFF'}</span>
-              </button>
-
-              {/* Interval select dropdown: 2h (6 AM - 6 PM IST), 4h, 6h */}
-              <div className="relative inline-block">
-                <select
-                  value={refreshInterval}
-                  onChange={(e) => onSelectInterval(Number(e.target.value))}
-                  className="bg-slate-850 border border-slate-700 text-slate-300 text-[11px] rounded-lg px-2 py-1 focus:outline-none focus:ring-1 focus:ring-emerald-500 cursor-pointer"
-                  title="Change Scheduled Auto-Refresh Cadence"
-                >
-                  <option value={7200}>Every 2 hrs (6 AM – 6 PM IST)</option>
-                  <option value={14400}>Every 4 hrs</option>
-                  <option value={21600}>Every 6 hrs</option>
-                </select>
+            <div className="flex items-center gap-3 bg-slate-950/80 px-3.5 py-1.5 rounded-xl border border-slate-800 text-xs">
+              <div className="flex items-center gap-2 border-r border-slate-800 pr-3">
+                <Clock className="w-3.5 h-3.5 text-emerald-400" />
+                <span className="text-slate-200 font-mono font-semibold">{istTime} IST</span>
               </div>
 
-              <button
-                onClick={onManualRefresh}
-                disabled={isRefreshing}
-                className="p-1.5 text-slate-400 hover:text-white rounded-lg hover:bg-slate-800 transition disabled:opacity-50"
-                title="Sync from cloud database immediately"
-              >
-                <RefreshCw className={`w-3.5 h-3.5 ${isRefreshing ? 'animate-spin text-emerald-400' : ''}`} />
-              </button>
+              {/* Auto Refresh pill with Interval Selector */}
+              <div className="flex items-center gap-2">
+                <button
+                  onClick={onToggleAutoRefresh}
+                  className={`flex items-center gap-1.5 px-2.5 py-1 rounded-lg font-medium text-[11px] transition ${
+                    isAutoRefreshEnabled 
+                      ? 'bg-emerald-500/20 text-emerald-300 border border-emerald-500/30' 
+                      : 'bg-slate-800 text-slate-400 border border-slate-700'
+                  }`}
+                  title="Toggle automated dashboard refresh"
+                >
+                  <span className={`w-2 h-2 rounded-full ${isAutoRefreshEnabled ? 'bg-emerald-400 animate-pulse' : 'bg-slate-500'}`} />
+                  <span>Auto-Refresh: {isAutoRefreshEnabled ? `ON (${formatCountdown(refreshCountdown)})` : 'OFF'}</span>
+                </button>
+
+                {/* Interval select dropdown */}
+                <div className="relative inline-block">
+                  <select
+                    value={refreshInterval}
+                    onChange={(e) => onSelectInterval(Number(e.target.value))}
+                    className="bg-slate-850 border border-slate-700 text-slate-300 text-[11px] rounded-lg px-2 py-1 focus:outline-none focus:ring-1 focus:ring-emerald-500 cursor-pointer"
+                    title="Change Scheduled Auto-Refresh Cadence"
+                  >
+                    <option value={7200}>Every 2 hrs (6 AM – 6 PM IST)</option>
+                    <option value={14400}>Every 4 hrs</option>
+                    <option value={21600}>Every 6 hrs</option>
+                  </select>
+                </div>
+
+                <button
+                  onClick={onManualRefresh}
+                  disabled={isRefreshing}
+                  className="p-1.5 text-slate-400 hover:text-white rounded-lg hover:bg-slate-800 transition disabled:opacity-50"
+                  title="Sync from cloud database immediately"
+                >
+                  <RefreshCw className={`w-3.5 h-3.5 ${isRefreshing ? 'animate-spin text-emerald-400' : ''}`} />
+                </button>
+              </div>
             </div>
           </div>
 
