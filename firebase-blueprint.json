@@ -1,0 +1,38 @@
+{
+  "entities": {
+    "SharedFeed": {
+      "title": "SharedFeed",
+      "description": "Global synchronized IPO feed cached from latest Google Sheet for all visitors and devices.",
+      "type": "object",
+      "properties": {
+        "ipos": {
+          "type": "array",
+          "description": "List of active mainboard IPOs"
+        },
+        "sheetTitle": {
+          "type": "string",
+          "description": "Title of the Google Sheet source"
+        },
+        "sheetUrl": {
+          "type": "string",
+          "description": "Public URL or ID of the spreadsheet"
+        },
+        "updatedAt": {
+          "type": "string",
+          "description": "Timestamp string of the update"
+        },
+        "updatedBy": {
+          "type": "string",
+          "description": "User email or identifier who updated the feed"
+        }
+      },
+      "required": ["ipos", "updatedAt"]
+    }
+  },
+  "firestore": {
+    "/ipo_feed/{feedId}": {
+      "schema": "SharedFeed",
+      "description": "Central published IPO feed documents accessible by any client"
+    }
+  }
+}

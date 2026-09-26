@@ -1,0 +1,22 @@
+rules_version = '2';
+service cloud.firestore {
+  match /databases/{database}/documents {
+    // Default-deny catch-all
+    match /{document=**} {
+      allow read, write: if false;
+    }
+
+    // Connection test document
+    match /test/{docId} {
+      allow read: if true;
+      allow write: if false;
+    }
+
+    // Central IPO Feed:
+    // Pure data-rendering: anyone can read and sync data without login
+    match /ipo_feed/{feedId} {
+      allow read: if true;
+      allow write: if true;
+    }
+  }
+}

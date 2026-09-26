@@ -1,0 +1,12 @@
+{
+  "projectId": "dhan-scanner-webapp",
+  "appId": "1:641743985641:web:6d201c867b095c20fb4978",
+  "apiKey": "AIzaSyCTD4VLLs0l2lyeS-nkMczCJ7EGcMNQNMI",
+  "authDomain": "dhan-scanner-webapp.firebaseapp.com",
+  "firestoreDatabaseId": "ai-studio-mainboardipotrac-2958584c-4e09-48bb-8fa5-8d8a256accb6",
+  "storageBucket": "dhan-scanner-webapp.firebasestorage.app",
+  "messagingSenderId": "641743985641",
+  "measurementId": "",
+  "oAuthClientId": "641743985641-52tih58fp793uua8dobj9l2cn07qkv8s.apps.googleusercontent.com",
+  "recaptchaSiteKey": ""
+}

@@ -1,0 +1,8 @@
+{
+  "name": "Mainboard IPO Tracker & Retail Decision Dashboard",
+  "description": "Daily real-time dashboard and decision engine for Indian retail investors tracking Mainboard IPOs on NSE/BSE with GMP cushion, subscription quality, and Google Drive sync.",
+  "requestFramePermissions": [],
+  "majorCapabilities": [
+    "MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"
+  ]
+}
