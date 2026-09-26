@@ -1,12 +1,13 @@
 import React, { useState } from 'react';
-import { TrendingUp, TrendingDown, Minus, Info, AlertTriangle, ShieldCheck, Activity } from 'lucide-react';
+import { TrendingUp, TrendingDown, Minus, ShieldCheck, Activity } from 'lucide-react';
 import { MarketSentimentData } from '../types/sentiment';
 
 interface MarketSentimentIndicatorProps {
   data: MarketSentimentData;
+  compact?: boolean;
 }
 
-export const MarketSentimentIndicator: React.FC<MarketSentimentIndicatorProps> = ({ data }) => {
+export const MarketSentimentIndicator: React.FC<MarketSentimentIndicatorProps> = ({ data, compact = false }) => {
   const [showTooltip, setShowTooltip] = useState(false);
 
   const isPositive = data.changePoints >= 0;
@@ -33,48 +34,50 @@ export const MarketSentimentIndicator: React.FC<MarketSentimentIndicatorProps> =
         onClick={() => setShowTooltip(!showTooltip)}
         onMouseEnter={() => setShowTooltip(true)}
         onMouseLeave={() => setShowTooltip(false)}
-        className="flex items-center gap-2 px-2.5 py-1.5 rounded-xl bg-slate-950/80 border border-slate-800 hover:border-slate-700 cursor-pointer transition select-none"
+        className={`flex items-center gap-1.5 sm:gap-2 px-2 sm:px-2.5 py-1 sm:py-1.5 rounded-xl bg-slate-950/80 border border-slate-800 hover:border-slate-700 cursor-pointer transition select-none ${
+          compact ? 'text-xs' : ''
+        }`}
         title="Click to view broader market sentiment impact on IPOs"
       >
         {/* NIFTY Label */}
         <div className="flex items-center gap-1">
-          <Activity className="w-3.5 h-3.5 text-indigo-400" />
-          <span className="text-[11px] font-bold text-slate-300">NIFTY 50</span>
+          <Activity className="w-3.5 h-3.5 text-indigo-400 shrink-0" />
+          <span className="text-[10px] sm:text-[11px] font-bold text-slate-300 whitespace-nowrap">NIFTY</span>
         </div>
 
         {/* Index Value & Day Change */}
-        <div className="flex items-baseline gap-1.5 font-mono text-xs">
+        <div className="flex items-baseline gap-1 font-mono text-[11px] sm:text-xs">
           <span className="font-semibold text-white">
-            {data.currentValue.toLocaleString('en-IN', { maximumFractionDigits: 1 })}
+            {data.currentValue.toLocaleString('en-IN', { maximumFractionDigits: 0 })}
           </span>
-          <span className={`text-[11px] font-semibold flex items-center gap-0.5 ${
+          <span className={`text-[10px] sm:text-[11px] font-semibold flex items-center gap-0.5 ${
             isPositive ? 'text-emerald-400' : 'text-rose-400'
           }`}>
             {isPositive ? (
-              <TrendingUp className="w-3 h-3" />
+              <TrendingUp className="w-2.5 h-2.5 sm:w-3 sm:h-3 shrink-0" />
             ) : isNeutral ? (
-              <Minus className="w-3 h-3" />
+              <Minus className="w-2.5 h-2.5 sm:w-3 sm:h-3 shrink-0" />
             ) : (
-              <TrendingDown className="w-3 h-3" />
+              <TrendingDown className="w-2.5 h-2.5 sm:w-3 sm:h-3 shrink-0" />
             )}
             {isPositive ? '+' : ''}{data.changePercent.toFixed(2)}%
           </span>
         </div>
 
         {/* Sentiment Badge */}
-        <span className={`hidden sm:inline-flex items-center gap-1 text-[10px] font-bold px-2 py-0.5 rounded-md border uppercase tracking-wider ${getBadgeStyle()}`}>
-          <span className={`w-1.5 h-1.5 rounded-full ${isBullish ? 'bg-emerald-400 animate-pulse' : isNeutral ? 'bg-amber-400' : 'bg-rose-400'}`} />
+        <span className={`inline-flex items-center gap-1 text-[9px] sm:text-[10px] font-bold px-1.5 sm:px-2 py-0.5 rounded-md border uppercase tracking-wider ${getBadgeStyle()}`}>
+          <span className={`w-1.5 h-1.5 rounded-full shrink-0 ${isBullish ? 'bg-emerald-400 animate-pulse' : isNeutral ? 'bg-amber-400' : 'bg-rose-400'}`} />
           {data.sentiment}
         </span>
       </div>
 
       {/* Popover Card */}
       {showTooltip && (
-        <div className="absolute top-full left-0 sm:left-auto sm:right-0 mt-2 w-80 p-4 bg-slate-900 border border-slate-700 rounded-2xl shadow-2xl z-50 animate-in fade-in zoom-in-95 duration-200">
+        <div className="absolute top-full left-0 sm:left-auto sm:right-0 mt-2 w-72 sm:w-80 p-3.5 sm:p-4 bg-slate-900 border border-slate-700 rounded-2xl shadow-2xl z-50 animate-in fade-in zoom-in-95 duration-200">
           <div className="flex items-center justify-between pb-2 border-b border-slate-800">
             <div className="flex items-center gap-1.5">
               <Activity className="w-4 h-4 text-emerald-400" />
-              <span className="font-bold text-xs text-white uppercase tracking-wider">Secondary Market Risk Context</span>
+              <span className="font-bold text-xs text-white uppercase tracking-wider">Secondary Market Risk</span>
             </div>
             <span className={`text-[10px] font-bold px-2 py-0.5 rounded border uppercase ${getBadgeStyle()}`}>
               {data.sentiment}
@@ -106,7 +109,7 @@ export const MarketSentimentIndicator: React.FC<MarketSentimentIndicatorProps> =
             <div className="p-2.5 rounded-xl bg-emerald-950/30 border border-emerald-500/20 text-emerald-200 text-[11px] leading-relaxed flex items-start gap-2">
               <ShieldCheck className="w-4 h-4 text-emerald-400 shrink-0 mt-0.5" />
               <div>
-                <span className="font-semibold text-emerald-300">Retail Application Impact: </span>
+                <span className="font-semibold text-emerald-300">Retail Impact: </span>
                 {data.retailAdvice}
               </div>
             </div>
