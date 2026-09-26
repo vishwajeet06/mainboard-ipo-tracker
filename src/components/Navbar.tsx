@@ -185,9 +185,9 @@ export const Navbar: React.FC<NavbarProps> = ({
         </div>
 
         {/* Mobile & Tablet Sub-bar (< 1024px screen sizes): Nifty Sentiment + IST Clock */}
-        <div className="flex lg:hidden items-center justify-between py-2 border-t border-slate-800/80 gap-2 overflow-x-auto no-scrollbar">
+        <div className="flex lg:hidden items-center justify-between py-2 border-t border-slate-800/80 gap-2 relative">
           {sentimentData && (
-            <div className="shrink-0">
+            <div className="shrink-0 relative">
               <MarketSentimentIndicator data={sentimentData} compact={true} />
             </div>
           )}
